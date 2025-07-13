@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Solar - Análisis de Energía Fotovoltaica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h2>Proyecto Solar</h2>
+            </div>
+            <button class="nav-toggle" aria-label="Abrir menú" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="#semana1" class="nav-link">Semana 1</a></li>
+                <li><a href="#semana2" class="nav-link">Semana 2</a></li>
+                <li><a href="#semana3" class="nav-link">Semana 3</a></li>
+                <li><a href="#semana4" class="nav-link">Semana 4</a></li>
+                <li><a href="#introduccion" class="nav-link">Introducción</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+                <li><a href="#sobre-mi" class="nav-link">Sobre mí</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main id="main-content">
+        <!-- Inicio View -->
+        <article id="view-inicio" class="view active">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Proyecto de Análisis Solar</h1>
+                    <p class="hero-subtitle">Análisis completo de datos de irradiancia solar y modelado de sistemas fotovoltaicos usando PVGIS y Python para optimizar la producción de energía renovable.</p>
+                    <a href="#introduccion" class="btn btn--primary btn--lg">Conoce más sobre energía solar</a>
+                </div>
+            </section>
+            
+            <section class="summary-cards container">
+                <h2>Desarrollo del proyecto en 4 semanas</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card__body">
+                            <div class="card-icon">📊</div>
+                            <h3>Semana 1</h3>
+                            <p>Recolección de datos de irradiancia solar desde PVGIS</p>
+                            <a href="#semana1" class="btn btn--outline btn--sm">Ver detalles</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__body">
+                            <div class="card-icon">🔍</div>
+                            <h3>Semana 2</h3>
+                            <p>Análisis exploratorio y limpieza de datos</p>
+                            <a href="#semana2" class="btn btn--outline btn--sm">Ver detalles</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__body">
+                            <div class="card-icon">🧮</div>
+                            <h3>Semana 3</h3>
+                            <p>Modelado de sistemas fotovoltaicos con pvlib</p>
+                            <a href="#semana3" class="btn btn--outline btn--sm">Ver detalles</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card__body">
+                            <div class="card-icon">📈</div>
+                            <h3>Semana 4</h3>
+                            <p>Resultados y análisis de producción energética</p>
+                            <a href="#semana4" class="btn btn--outline btn--sm">Ver detalles</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+
+        <!-- Semana 1 View -->
+        <article id="view-semana1" class="view">
+            <div class="container">
+                <h1>Semana 1: Recolección de Datos</h1>
+                <p>En esta primera semana, nos enfocamos en obtener datos de irradiancia solar utilizando la API de PVGIS (Photovoltaic Geographical Information System) para Madrid, España.</p>
+                
+                <h2>Fuente de datos: PVGIS</h2>
+                <p>PVGIS es una herramienta gratuita que proporciona datos de irradiancia solar y estimaciones de producción fotovoltaica para Europa, África y gran parte de Asia. Los datos se guardaron en formato CSV para su posterior análisis.</p>
+                
+                <h3>Parámetros utilizados</h3>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Parámetro</th>
+                                <th>Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="parameters-table">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3>Código de extracción</h3>
+                <pre><code>import requests
+import pandas as pd
+
+# Parámetros para Madrid
+lat, lon = 40.4168, -3.7038
+year = 2022
+
+# URL de la API PVGIS
+url = f"https://re.jrc.ec.europa.eu/api/seriescalc"
+params = {
+    'lat': lat,
+    'lon': lon,
+    'startyear': year,
+    'endyear': year,
+    'outputformat': 'csv',
+    'components': 1,
+    'browser': 0
+}
+
+# Solicitud de datos
+response = requests.get(url, params=params)
+data = pd.read_csv(StringIO(response.text), skiprows=10, nrows=8760)
+data.to_csv('datos_irradiancia_madrid.csv', index=False)
+</code></pre>
+                
+                <div class="chart-placeholder">
+                    <img src="https://placehold.co/600x300?text=Gráfico+Irradiancia" alt="Gráfico de Irradiancia Solar">
+                    <p class="caption">Ejemplo de visualización de datos de irradiancia solar</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Semana 2 View -->
+        <article id="view-semana2" class="view">
+            <div class="container">
+                <h1>Semana 2: Análisis Exploratorio</h1>
+                <p>Durante la segunda semana, realizamos un análisis exploratorio exhaustivo de los datos recolectados, incluyendo limpieza y detección de anomalías.</p>
+                
+                <h2>Proceso de limpieza de datos</h2>
+                <ul>
+                    <li>Verificación de valores nulos y duplicados</li>
+                    <li>Análisis de patrones estacionales</li>
+                    <li>Detección de valores atípicos</li>
+                    <li>Conversión de tipos de datos</li>
+                </ul>
+                
+                <h3>Resumen de calidad de datos</h3>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Valores Nulos</th>
+                                <th>Duplicados</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>G(i) - Irradiancia</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td><span class="status status--success">Limpio</span></td>
+                            </tr>
+                            <tr>
+                                <td>H_sun - Horas de sol</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td><span class="status status--success">Limpio</span></td>
+                            </tr>
+                            <tr>
+                                <td>T2m - Temperatura</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td><span class="status status--success">Limpio</span></td>
+                            </tr>
+                            <tr>
+                                <td>WS10m - Viento</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td><span class="status status--success">Limpio</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="chart-placeholder">
+                    <img src="https://placehold.co/600x300?text=Histograma+Irradiancia" alt="Histograma de distribución de irradiancia">
+                    <p class="caption">Distribución de valores de irradiancia solar a lo largo del año</p>
+                </div>
+            </div>
+        </article>
+
+        <!-- Semana 3 View -->
+        <article id="view-semana3" class="view">
+            <div class="container">
+                <h1>Semana 3: Modelado Fotovoltaico</h1>
+                <p>En la tercera semana implementamos modelos de sistemas fotovoltaicos utilizando la librería pvlib de Python para simular la producción de energía.</p>
+                
+                <h2>Librería pvlib ModelChain</h2>
+                <p>Utilizamos la clase ModelChain de pvlib que integra todos los pasos necesarios para modelar un sistema fotovoltaico: desde la irradiancia en el plano hasta la potencia AC de salida.</p>
+                
+                <h3>Supuestos del modelo</h3>
+                <ul>
+                    <li>Potencia nominal del sistema: 5 kWp</li>
+                    <li>Orientación: Sur (azimut 180°)</li>
+                    <li>Inclinación óptima: 35°</li>
+                    <li>Eficiencia del inversor: 96%</li>
+                    <li>Pérdidas del sistema: 14%</li>
+                    <li>Tecnología: Silicio cristalino</li>
+                </ul>
+                
+                <h3>Código de modelado</h3>
+                <pre><code>import pvlib
+from pvlib import pvsystem, modelchain, location
+
+# Definir localización
+madrid = location.Location(40.4168, -3.7038, 'Europe/Madrid', 667, 'Madrid')
+
+# Configurar sistema PV
+sistema_pv = pvsystem.PVSystem(
+    surface_tilt=35, 
+    surface_azimuth=180,
+    module_parameters={'pdc0': 300, 'gamma_pdc': -0.004},
+    inverter_parameters={'pdc0': 5000, 'eta_inv_nom': 0.96}
+)
+
+# Crear modelo completo
+mc = modelchain.ModelChain(sistema_pv, madrid, 
+                          aoi_model='physical', 
+                          spectral_model='no_loss')
+
+# Ejecutar modelo con datos meteorológicos
+mc.run_model(weather_data)
+</code></pre>
+            </div>
+        </article>
+
+        <!-- Semana 4 View -->
+        <article id="view-semana4" class="view">
+            <div class="container">
+                <h1>Semana 4: Resultados y Análisis</h1>
+                <p>En la última semana analizamos los resultados del modelo y calculamos los indicadores clave de rendimiento del sistema fotovoltaico.</p>
+                
+                <h2>Indicadores clave</h2>
+                <div class="kpi-cards">
+                    <div class="kpi-card">
+                        <h3>Energía Anual</h3>
+                        <div class="kpi-value">7,245 kWh</div>
+                        <p>Producción total estimada</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Ahorro Estimado</h3>
+                        <div class="kpi-value">€1,087</div>
+                        <p>Ahorro anual en electricidad</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>Factor de Capacidad</h3>
+                        <div class="kpi-value">16.5%</div>
+                        <p>Eficiencia del sistema</p>
+                    </div>
+                    <div class="kpi-card">
+                        <h3>CO₂ Evitado</h3>
+                        <div class="kpi-value">2.9 ton</div>
+                        <p>Reducción de emisiones</p>
+                    </div>
+                </div>
+                
+                <div class="chart-placeholder">
+                    <img src="https://placehold.co/600x400?text=Producción+Mensual" alt="Gráfico de producción mensual">
+                    <p class="caption">Producción de energía mensual estimada</p>
+                </div>
+                
+                <div class="download-section">
+                    <h3>Descargar informe completo</h3>
+                    <a href="#" class="btn btn--primary">📄 Descargar Informe PDF</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Introducción View -->
+        <article id="view-introduccion" class="view">
+            <div class="container">
+                <h1>Introducción a la Energía Solar</h1>
+                <div class="intro-content">
+                    <div class="intro-text">
+                        <p>La energía solar fotovoltaica representa una de las tecnologías renovables más prometedoras del siglo XXI. Mediante el efecto fotovoltaico, las células solares convierten directamente la radiación solar en electricidad, ofreciendo una fuente de energía limpia, silenciosa y prácticamente inagotable.</p>
+                        
+                        <p>Los sistemas fotovoltaicos han experimentado una dramática reducción de costos en las últimas décadas, convirtiéndose en la fuente de electricidad más económica en muchas regiones del mundo. Esta tecnología no solo contribuye a la reducción de emisiones de gases de efecto invernadero, sino que también ofrece independencia energética y beneficios económicos a largo plazo.</p>
+                        
+                        <p>El funcionamiento de un sistema fotovoltaico depende de múltiples factores: la irradiancia solar disponible, la temperatura ambiente, la orientación e inclinación de los paneles, y las características técnicas de los componentes. Un análisis detallado de estos parámetros es fundamental para optimizar el diseño y predecir el rendimiento del sistema.</p>
+                        
+                        <p>Este proyecto analiza datos reales de irradiancia solar para Madrid, utilizando herramientas como PVGIS y la librería pvlib de Python, con el objetivo de modelar y evaluar el comportamiento de un sistema fotovoltaico típico. Los resultados proporcionan información valiosa para la toma de decisiones en proyectos de energía solar.</p>
+                    </div>
+                    <div class="intro-image">
+                        <img src="https://placehold.co/400x300?text=Infografía+Solar" alt="Infografía sobre energía solar">
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- FAQ View -->
+        <article id="view-faq" class="view">
+            <div class="container">
+                <h1>Preguntas Frecuentes</h1>
+                
+                <div class="faq-section">
+                    <div class="faq-list" id="faq-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <h2>Glossario de términos</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Término</th>
+                                <th>Definición</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PVGIS</td>
+                                <td>Sistema de Información Geográfica Fotovoltaica de la Comisión Europea</td>
+                            </tr>
+                            <tr>
+                                <td>Irradiancia</td>
+                                <td>Potencia de radiación solar por unidad de área (W/m²)</td>
+                            </tr>
+                            <tr>
+                                <td>Factor de Capacidad</td>
+                                <td>Relación entre la energía real producida y la máxima teórica</td>
+                            </tr>
+                            <tr>
+                                <td>Azimut</td>
+                                <td>Ángulo de orientación del panel respecto al sur</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </article>
+
+        <!-- Contacto View -->
+        <article id="view-contacto" class="view">
+            <div class="container">
+                <h1>Contacto</h1>
+                <div class="contact-content">
+                    <div class="contact-form">
+                        <h2>Envía un mensaje</h2>
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Nombre</label>
+                                <input type="text" id="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Mensaje</label>
+                                <textarea id="message" class="form-control" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn--primary">Enviar mensaje</button>
+                        </form>
+                    </div>
+                    
+                    <div class="contact-info">
+                        <h2>Sígueme en redes</h2>
+                        <div class="social-links">
+                            <a href="#" target="_blank" class="social-link">🐦 Twitter</a>
+                            <a href="#" target="_blank" class="social-link">💼 LinkedIn</a>
+                            <a href="#" target="_blank" class="social-link">📧 Email</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <!-- Sobre mí View -->
+        <article id="view-sobre-mi" class="view">
+            <div class="container">
+                <h1>Sobre mí</h1>
+                <div class="about-content">
+                    <div class="about-photo">
+                        <img src="https://placehold.co/200x200?text=Foto" alt="Foto de perfil">
+                    </div>
+                    <div class="about-text">
+                        <p>Soy un investigador apasionado por las energías renovables y el análisis de datos. Mi experiencia combina conocimientos técnicos en ingeniería con habilidades avanzadas en programación y modelado estadístico.</p>
+                        
+                        <p>Este proyecto surge de mi interés por aplicar técnicas de ciencia de datos al sector energético, específicamente en el análisis y optimización de sistemas fotovoltaicos. Utilizo Python y sus librerías especializadas para desarrollar modelos predictivos que ayuden en la toma de decisiones para proyectos solares.</p>
+                        
+                        <h3>Habilidades técnicas</h3>
+                        <div class="skills">
+                            <span class="skill-badge">Python</span>
+                            <span class="skill-badge">pvlib</span>
+                            <span class="skill-badge">Pandas</span>
+                            <span class="skill-badge">PVGIS</span>
+                            <span class="skill-badge">Análisis de datos</span>
+                            <span class="skill-badge">Energía solar</span>
+                        </div>
+                        
+                        <div class="github-link">
+                            <a href="#" target="_blank" class="btn btn--outline">🔗 Ver proyecto en GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <!-- Data Script -->
+    <script type="application/json" id="faq-data">
+    {
+        "parametersTable": [
+            {"Parámetro":"Latitud","Valor":"40.4168"},
+            {"Parámetro":"Longitud","Valor":"-3.7038"},
+            {"Parámetro":"Año","Valor":"2022"},
+            {"Parámetro":"Variables","Valor":"G(i), H_sun, T2m, WS10m"},
+            {"Parámetro":"Resolución","Valor":"Horaria"},
+            {"Parámetro":"Formato","Valor":"CSV"}
+        ],
+        "faq": [
+            {"q":"¿Funciona la energía solar en días nublados?","a":"Sí, aunque con menor producción. Los paneles generan electricidad con luz difusa."},
+            {"q":"¿Cuál es la vida útil típica de un panel?","a":"Entre 25 y 30 años, con degradación gradual."},
+            {"q":"¿Qué mantenimiento requieren los paneles?","a":"Limpieza ocasional y revisión de conexiones eléctricas."},
+            {"q":"¿Qué significa kWh?","a":"Kilovatio-hora, unidad de energía eléctrica."}
+        ]
+    }
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
